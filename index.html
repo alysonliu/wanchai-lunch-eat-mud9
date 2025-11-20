@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>灣仔食神籤 CUSTOM | Wan Chai Lunch Guru</title>
+    <title>灣仔食神籤 | Smart Editor</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Noto+Sans+HK:wght@300;500;700&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -57,8 +57,6 @@
             margin-bottom: 20px;
             box-shadow: 0 0 15px var(--neon-blue), inset 0 0 20px rgba(0, 243, 255, 0.2);
             text-align: center;
-            position: relative;
-            overflow: hidden;
         }
 
         .slot-display {
@@ -92,7 +90,6 @@
             padding: 12px; border-radius: 8px; font-size: 1rem; outline: none; transition: 0.3s;
         }
 
-        /* Rain Toggle */
         .rain-toggle {
             display: flex; align-items: center; justify-content: space-between;
             background: rgba(0,0,0,0.3); padding: 12px; border-radius: 8px;
@@ -103,13 +100,11 @@
             background: rgba(0, 243, 255, 0.1);
         }
 
-        /* Spin Button */
         .spin-btn {
             width: 100%; padding: 15px; font-family: 'Orbitron', sans-serif; font-size: 1.5rem; font-weight: 900;
             color: #000; background: linear-gradient(90deg, var(--neon-blue), var(--neon-pink));
             border: none; border-radius: 50px; cursor: pointer; margin-top: 15px;
             text-transform: uppercase; box-shadow: 0 0 20px rgba(255, 0, 255, 0.4);
-            transition: transform 0.1s, box-shadow 0.3s;
         }
         .spin-btn:active { transform: scale(0.95); }
         .spin-btn:disabled { filter: grayscale(1); cursor: not-allowed; }
@@ -120,7 +115,6 @@
             background: rgba(0,0,0,0.85); backdrop-filter: blur(5px);
             display: none; align-items: center; justify-content: center; z-index: 100;
         }
-
         .result-card {
             width: 90%; max-width: 400px; background: #1a1a1a;
             border: 2px solid var(--neon-pink); border-radius: 20px;
@@ -128,42 +122,50 @@
             animation: popIn 0.4s forwards; position: relative;
         }
         @keyframes popIn { from {transform: scale(0.8); opacity:0;} to {transform: scale(1); opacity:1;} }
-
         .res-img { width: 100%; height: 220px; object-fit: cover; }
         .res-content { padding: 25px; text-align: center; }
-        .res-name { font-size: 1.8rem; font-weight: bold; color: white; margin-bottom: 10px; }
-        .tags { display: flex; justify-content: center; gap: 10px; margin-bottom: 15px; flex-wrap: wrap; }
-        .tag { font-size: 0.8rem; padding: 5px 10px; border-radius: 4px; background: #333; color: #ccc; }
-        .tag.neon { color: var(--neon-yellow); border: 1px solid var(--neon-yellow); background: transparent; }
-        
-        .close-btn {
-            position: absolute; top: 15px; right: 15px; background: rgba(0,0,0,0.5);
-            color: white; border: none; width: 35px; height: 35px; border-radius: 50%;
-            cursor: pointer; font-size: 1.2rem;
-        }
+        .close-btn { position: absolute; top: 15px; right: 15px; background: rgba(0,0,0,0.5); color: white; border: none; width: 35px; height: 35px; border-radius: 50%; cursor: pointer; }
+        .map-link { display: inline-block; background: var(--neon-blue); color: #000; text-decoration: none; padding: 12px 30px; border-radius: 30px; font-weight: bold; margin-top: 10px; }
 
-        .map-link {
-            display: inline-block; background: var(--neon-blue); color: #000; text-decoration: none;
-            padding: 12px 30px; border-radius: 30px; font-weight: bold; margin-top: 10px;
-            box-shadow: 0 0 15px rgba(0, 243, 255, 0.4);
-        }
-
-        /* DB Manager */
+        /* DB Manager & Smart Form */
         .db-manager { width: 100%; max-width: 450px; border-top: 1px solid #333; padding-top: 20px; }
         .accordion-btn { background: transparent; color: #888; border: 1px solid #444; width: 100%; padding: 10px; cursor: pointer; border-radius: 5px; }
         .db-content { display: none; margin-top: 15px; }
         .db-content.show { display: block; }
+
+        /* Link Parser Area */
+        .link-parser {
+            background: rgba(0, 243, 255, 0.1);
+            border: 1px solid var(--neon-blue);
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+        }
+        .link-input-group { display: flex; gap: 5px; margin-top: 5px; }
+        .btn-parse { background: var(--neon-blue); color: black; border: none; padding: 0 15px; font-weight: bold; cursor: pointer; border-radius: 5px; }
+
+        /* Form */
+        .add-form {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+            background: rgba(255,255,255,0.05); padding: 15px; border-radius: 10px; margin-bottom: 15px;
+        }
+        .full-width { grid-column: span 2; }
+        .btn-save { grid-column: span 2; background: var(--neon-pink); color: white; border: none; padding: 10px; cursor: pointer; border-radius: 5px; font-weight: bold; }
+        .btn-cancel-edit { grid-column: span 2; background: #555; color: white; border: none; padding: 8px; cursor: pointer; border-radius: 5px; display: none; }
+
+        /* List */
         .list-item { display: flex; justify-content: space-between; align-items: center; padding: 10px; border-bottom: 1px solid #333; font-size: 0.9rem; }
-        .btn-del { background: transparent; color: #ff4444; border: 1px solid #ff4444; padding: 2px 8px; border-radius: 4px; cursor: pointer; }
-        .btn-reset { width: 100%; margin-top: 20px; background: #333; border: 1px solid #555; color: #fff; padding: 10px; cursor: pointer; border-radius: 8px;}
-        .btn-reset:hover { background: #ff4444; border-color: #ff4444; }
+        .item-actions { display: flex; gap: 5px; }
+        .btn-sm { padding: 2px 8px; border-radius: 4px; cursor: pointer; font-size: 0.8rem; }
+        .btn-edit { background: transparent; color: var(--neon-yellow); border: 1px solid var(--neon-yellow); }
+        .btn-del { background: transparent; color: #ff4444; border: 1px solid #ff4444; }
 
     </style>
 </head>
 <body>
 
-    <h1>灣仔食神籤 <span style="font-size:1rem; vertical-align: super; color:var(--neon-blue)">CUSTOM</span></h1>
-    <p class="subtitle">Your Selection. Your Lunch.</p>
+    <h1>灣仔食神籤 <span style="font-size:1rem; vertical-align: super; color:var(--neon-blue)">AI EDITOR</span></h1>
+    <p class="subtitle">Paste Link. Auto Fill. Lunch Time.</p>
 
     <div class="slot-machine-container">
         <div class="slot-display" id="slotText">READY?</div>
@@ -173,187 +175,165 @@
         <div class="filter-row">
             <select id="budget">
                 <option value="all">💰 預算隨心</option>
-                <option value="1">💵 平民 (<$70)</option>
-                <option value="2">💴 正常 ($70-150)</option>
-                <option value="3">💶 豪食 (>$150)</option>
+                <option value="1">💵 平 (<$70)</option>
+                <option value="2">💴 中 ($70-150)</option>
+                <option value="3">💶 貴 (>$150)</option>
             </select>
             <select id="cuisine">
                 <option value="all">🍽️ 菜式隨心</option>
-                <option value="local">🇭🇰 港式/兩餸</option>
-                <option value="asian">🍜 日韓泰台</option>
-                <option value="western">🍔 西式/Cafe</option>
+                <option value="local">🇭🇰 港式</option>
+                <option value="asian">🍜 亞洲</option>
+                <option value="western">🍔 西式</option>
             </select>
         </div>
-
         <div class="rain-toggle" id="rainModeToggle" onclick="toggleRainMode()">
             <div style="display:flex; align-items:center; gap:10px;">
                 <span style="font-size:1.5rem;">☔</span>
-                <div>
-                    <div style="font-weight:bold; color:white;">瓦遮頭模式</div>
-                    <div style="font-size:0.7rem; color:#aaa;">只顯示室內/天橋連接</div>
-                </div>
+                <div><div style="font-weight:bold;">瓦遮頭模式</div><div style="font-size:0.7rem; color:#aaa;">只顯示有蓋/室內</div></div>
             </div>
             <div id="rainStatus" style="color:#555; font-weight:bold;">OFF</div>
         </div>
-
         <button class="spin-btn" id="spinBtn" onclick="startLottery()">🎰 START ROLL</button>
     </div>
 
     <div class="db-manager">
-        <button class="accordion-btn" onclick="toggleDb()">📝 管理清單 (現有 <span id="count">0</span> 間)</button>
+        <button class="accordion-btn" onclick="toggleDb()">📝 管理 & 新增餐廳 (現有 <span id="count">0</span> 間)</button>
+        
         <div class="db-content" id="dbContent">
+            
+            <!-- Smart Link Parser -->
+            <div class="link-parser">
+                <label style="font-size:0.8rem; color:var(--neon-blue);">✨ 智能填表：貼上 OpenRice 連結 (自動抓名)</label>
+                <div class="link-input-group">
+                    <input type="text" id="link-input" placeholder="Paste URL here...">
+                    <button class="btn-parse" onclick="parseLink()">🪄 Auto-Fill</button>
+                </div>
+            </div>
+
+            <!-- Editor Form -->
+            <div class="add-form">
+                <input type="hidden" id="edit-index" value="-1">
+                <input type="text" id="new-name" class="full-width" placeholder="餐廳名稱">
+                <select id="new-type">
+                    <option value="local">港式</option>
+                    <option value="asian">亞洲</option>
+                    <option value="western">西式</option>
+                    <option value="all">其他</option>
+                </select>
+                <select id="new-price">
+                    <option value="1">平 ($)</option>
+                    <option value="2">中 ($$)</option>
+                    <option value="3">貴 ($$$)</option>
+                </select>
+                <div class="full-width" style="display:flex; align-items:center; gap:5px; color:#aaa; font-size:0.8rem;">
+                    <input type="checkbox" id="new-covered" style="flex:0; width:20px;"> 有瓦遮頭
+                </div>
+                <button class="btn-save" id="saveBtn" onclick="saveRestaurant()">➕ 加入清單</button>
+                <button class="btn-cancel-edit" id="cancelBtn" onclick="cancelEdit()">❌ 取消編輯</button>
+            </div>
+
             <div id="restaurant-list" style="max-height: 300px; overflow-y: auto;"></div>
-            <button class="btn-reset" onclick="resetData()">⚠️ 重置所有數據至預設 (按此載入新List)</button>
+            
+            <button style="width:100%; margin-top:20px; background:#333; color:#aaa; border:none; padding:10px; border-radius:5px; cursor:pointer;" onclick="resetData()">⚠️ 重置至預設</button>
         </div>
     </div>
 
+    <!-- Result Overlay -->
     <div class="result-overlay" id="resultOverlay">
         <div class="result-card">
             <button class="close-btn" onclick="closeResult()">×</button>
             <img src="" id="resImg" class="res-img">
             <div class="res-content">
                 <div class="res-name" id="resName">Name</div>
-                <div class="tags">
-                    <span class="tag neon" id="resPrice">$$</span>
-                    <span class="tag" id="resType">Type</span>
-                    <span class="tag" id="resDist">Rain</span>
-                </div>
-                <div style="color:#888; margin-bottom:15px; font-size:0.9rem;" id="resAddress">Address</div>
+                <div style="margin-bottom:10px; font-size:1.5rem;" id="resEmoji">🍱</div>
+                <div style="color:#888; margin-bottom:15px;" id="resAddress">Address</div>
                 <a href="#" target="_blank" class="map-link" id="resMap">📍 GOOGLE MAPS</a>
             </div>
         </div>
     </div>
 
     <script>
-        // --- The NEW 14 Custom Restaurants ---
-        // Price: 1 (<$70), 2 ($70-150), 3 (>$150)
+        // --- 1. Data ---
         const defaultRestaurants = [
-            { 
-                name: "大吉冰室", type: "local", price: 1, covered: false, 
-                address: "灣仔軒尼詩道288號", 
-                img: "https://images.unsplash.com/photo-1606525437679-037aca74a3e9?w=600&q=80" // Toast/Tea
-            },
-            { 
-                name: "田浦食肉 (Tabula)", type: "asian", price: 2, covered: false, 
-                address: "灣仔菲林明道30號", 
-                img: "https://images.unsplash.com/photo-1553621042-f6e147245754?w=600&q=80" // Yakiniku/Beef
-            },
-            { 
-                name: "Have a Date", type: "western", price: 2, covered: false, 
-                address: "灣仔石水渠街82號", 
-                img: "https://images.unsplash.com/photo-1466978913421-dad93866169d?w=600&q=80" // Cafe/Western
-            },
-            { 
-                name: "波士冰室", type: "local", price: 1, covered: false, 
-                address: "灣仔軒尼詩道313號", 
-                img: "https://images.unsplash.com/photo-1554136280-7586c4c3187e?w=600&q=80" // Cha Chaan Teng
-            },
-            { 
-                name: "明寶石餐廳", type: "western", price: 2, covered: false, 
-                address: "灣仔莊士敦道14-16號", 
-                img: "https://images.unsplash.com/photo-1544025162-d76694265947?w=600&q=80" // Mixed Grill/HK Steak
-            },
-            { 
-                name: "Poke Go", type: "western", price: 2, covered: false, 
-                address: "灣仔電氣街5號", 
-                img: "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=600&q=80" // Poke Bowl
-            },
-            { 
-                name: "丹麥冰室", type: "local", price: 1, covered: false, 
-                address: "灣仔菲林明道13號", 
-                img: "https://images.unsplash.com/photo-1525155505-735f7050288d?w=600&q=80" // Old school
-            },
-            { 
-                name: "智尊 (Chi Chun)", type: "local", price: 1, covered: false, 
-                address: "灣仔大王東街", 
-                img: "https://images.unsplash.com/photo-1591814468924-caf88d1232e1?w=600&q=80" // Noodles
-            },
-            { 
-                name: "新泰東南亞餐廳", type: "asian", price: 2, covered: false, 
-                address: "灣仔盧押道20號", 
-                img: "https://images.unsplash.com/photo-1565557623262-b51c2513a641?w=600&q=80" // Thai Curry
-            },
-            { 
-                name: "早啲見面", type: "asian", price: 1, covered: false, 
-                address: "灣仔大王東街9號", 
-                img: "https://images.unsplash.com/photo-1552611052-33e04de081de?w=600&q=80" // Taiwanese Noodles
-            },
-            { 
-                name: "和食居", type: "asian", price: 2, covered: false, 
-                address: "灣仔駱克道", 
-                img: "https://images.unsplash.com/photo-1579871494447-9811cf80d66c?w=600&q=80" // Japanese Set
-            },
-            { 
-                name: "港膠所", type: "local", price: 1, covered: false, 
-                address: "灣仔謝斐道392號", 
-                img: "https://images.unsplash.com/photo-1612929633738-8fe44f7ec841?w=600&q=80" // Fish Maw Noodle
-            },
-            { 
-                name: "露面 (Lo Min)", type: "local", price: 2, covered: false, 
-                address: "灣仔永豐街18號", 
-                img: "https://images.unsplash.com/photo-1555126634-323283e090fa?w=600&q=80" // Cart Noodles Fancy
-            },
-            { 
-                name: "新竹園", type: "local", price: 2, covered: false, 
-                address: "灣仔莊士敦道", 
-                img: "https://images.unsplash.com/photo-1563245372-f21724e3856d?w=600&q=80" // Dim Sum/Chiu Chow
-            }
+            { name: "大吉冰室", type: "local", price: 1, covered: false, address: "灣仔", img: "https://images.unsplash.com/photo-1554136280-7586c4c3187e?w=600&q=80" },
+            { name: "田浦食肉", type: "asian", price: 2, covered: false, address: "灣仔", img: "https://images.unsplash.com/photo-1553621042-f6e147245754?w=600&q=80" },
+            { name: "Have a Date", type: "western", price: 2, covered: false, address: "灣仔", img: "https://images.unsplash.com/photo-1466978913421-dad93866169d?w=600&q=80" },
+            { name: "波士冰室", type: "local", price: 1, covered: false, address: "灣仔", img: "https://images.unsplash.com/photo-1606525437679-037aca74a3e9?w=600&q=80" },
+            { name: "明寶石餐廳", type: "western", price: 2, covered: false, address: "灣仔", img: "https://images.unsplash.com/photo-1544025162-d76694265947?w=600&q=80" },
+            { name: "Poke Go", type: "western", price: 2, covered: false, address: "灣仔", img: "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=600&q=80" },
+            { name: "新泰", type: "asian", price: 2, covered: false, address: "灣仔", img: "https://images.unsplash.com/photo-1565557623262-b51c2513a641?w=600&q=80" },
+            { name: "港膠所", type: "local", price: 1, covered: false, address: "灣仔", img: "https://images.unsplash.com/photo-1612929633738-8fe44f7ec841?w=600&q=80" }
         ];
 
-        // --- Logic ---
         let restaurants = [];
         let rainMode = false;
 
+        // --- 2. Initialization ---
         function loadData() {
-            // Try to get from storage
-            const stored = localStorage.getItem('wcLunchData_Custom');
-            if (stored) {
-                restaurants = JSON.parse(stored);
-            } else {
-                // Default load
-                restaurants = [...defaultRestaurants];
-            }
+            const stored = localStorage.getItem('wcLunchData_V3');
+            restaurants = stored ? JSON.parse(stored) : [...defaultRestaurants];
             updateCount();
             renderList();
         }
 
         function saveData() {
-            localStorage.setItem('wcLunchData_Custom', JSON.stringify(restaurants));
+            localStorage.setItem('wcLunchData_V3', JSON.stringify(restaurants));
             updateCount();
             renderList();
         }
 
         function resetData() {
-            if(confirm('確定要載入該 14 間指定餐廳？(你之前的更改會消失)')) {
+            if(confirm('重置會刪除你新增的餐廳，確定？')) {
                 restaurants = [...defaultRestaurants];
                 saveData();
-                alert("已載入清單！");
             }
         }
 
-        function updateCount() {
-            document.getElementById('count').innerText = restaurants.length;
-        }
+        function updateCount() { document.getElementById('count').innerText = restaurants.length; }
 
-        function toggleRainMode() {
-            rainMode = !rainMode;
-            const el = document.getElementById('rainModeToggle');
-            const txt = document.getElementById('rainStatus');
-            if(rainMode) {
-                el.classList.add('active');
-                txt.innerText = "ON";
-                txt.style.color = "var(--neon-blue)";
+        // --- 3. SMART PARSER (The Magic) ---
+        function parseLink() {
+            const url = document.getElementById('link-input').value;
+            if(!url) return;
+
+            let extractedName = "";
+            let typeGuess = "local"; // default
+
+            // Rule A: OpenRice URL (e.g., openrice.com/.../r-kam-fung-cafe-r12345)
+            if (url.includes("openrice.com")) {
+                // Regex to capture text between "r-" and "-r(digits)" OR just the name slug
+                const matches = url.match(/\/r-([^\/]+)-r\d+/); 
+                if (matches && matches[1]) {
+                    extractedName = matches[1].replace(/-/g, " "); // replace hyphens with space
+                } else {
+                    // Fallback for other URL patterns
+                    const parts = url.split('/');
+                    // usually the name is near the end
+                    for(let p of parts) {
+                        if(p.length > 3 && !p.includes('.')) { extractedName = p.replace(/-/g, " "); }
+                    }
+                }
+            } 
+            
+            // Cleanup Name (Capitalize)
+            if(extractedName) {
+                extractedName = extractedName.toLowerCase().replace(/(^\w{1})|(\s+\w{1})/g, letter => letter.toUpperCase());
+                document.getElementById('new-name').value = extractedName;
+                
+                // Guess Cuisine
+                const lower = extractedName.toLowerCase();
+                if(lower.includes('sushi') || lower.includes('ramen') || lower.includes('thai')) typeGuess = "asian";
+                if(lower.includes('cafe') || lower.includes('burger') || lower.includes('pizza') || lower.includes('steak')) typeGuess = "western";
+                
+                document.getElementById('new-type').value = typeGuess;
+                
+                alert(`✅ 成功識別：${extractedName}\n(價格同埋地點需要你自己填)`);
             } else {
-                el.classList.remove('active');
-                txt.innerText = "OFF";
-                txt.style.color = "#555";
+                alert("⚠️ 分析唔到個名，試下只貼餐廳名？");
             }
         }
 
-        function toggleDb() {
-            document.getElementById('dbContent').classList.toggle('show');
-        }
-
+        // --- 4. Add / Edit Logic ---
         function renderList() {
             const listEl = document.getElementById('restaurant-list');
             listEl.innerHTML = '';
@@ -363,18 +343,96 @@
                 div.innerHTML = `
                     <div>
                         <span style="color:white; font-weight:bold;">${r.name}</span>
-                        <span style="color:#888; font-size:0.75rem; margin-left:5px;">${getPriceSymbol(r.price)}</span>
+                        <span style="color:#888; font-size:0.75rem;">${r.type} • ${r.price == 1 ? '$' : (r.price==2?'$$':'$$$')}</span>
                     </div>
-                    <button class="btn-del" onclick="deleteItem(${index})">刪除</button>
+                    <div class="item-actions">
+                        <button class="btn-sm btn-edit" onclick="editItem(${index})">✏️ Edit</button>
+                        <button class="btn-sm btn-del" onclick="deleteItem(${index})">🗑️</button>
+                    </div>
                 `;
                 listEl.appendChild(div);
             });
         }
 
         function deleteItem(index) {
-            restaurants.splice(index, 1);
-            saveData();
+            if(confirm('Delete?')) {
+                restaurants.splice(index, 1);
+                saveData();
+            }
         }
+
+        function editItem(index) {
+            const r = restaurants[index];
+            document.getElementById('edit-index').value = index;
+            document.getElementById('new-name').value = r.name;
+            document.getElementById('new-type').value = r.type;
+            document.getElementById('new-price').value = r.price;
+            document.getElementById('new-covered').checked = r.covered;
+
+            // UI Changes
+            document.getElementById('saveBtn').innerText = "💾 儲存修改";
+            document.getElementById('saveBtn').style.background = "var(--neon-yellow)";
+            document.getElementById('saveBtn').style.color = "black";
+            document.getElementById('cancelBtn').style.display = "block";
+            
+            // Scroll to form
+            document.querySelector('.add-form').scrollIntoView({behavior:'smooth'});
+        }
+
+        function cancelEdit() {
+            document.getElementById('edit-index').value = "-1";
+            document.getElementById('new-name').value = "";
+            document.getElementById('new-type').value = "local";
+            document.getElementById('new-price').value = "1";
+            document.getElementById('new-covered').checked = false;
+            
+            // Reset UI
+            document.getElementById('saveBtn').innerText = "➕ 加入清單";
+            document.getElementById('saveBtn').style.background = "var(--neon-pink)";
+            document.getElementById('saveBtn').style.color = "white";
+            document.getElementById('cancelBtn').style.display = "none";
+        }
+
+        function saveRestaurant() {
+            const index = parseInt(document.getElementById('edit-index').value);
+            const name = document.getElementById('new-name').value;
+            const type = document.getElementById('new-type').value;
+            const price = parseInt(document.getElementById('new-price').value);
+            const covered = document.getElementById('new-covered').checked;
+
+            if(!name) { alert('請輸入餐廳名！'); return; }
+
+            const data = {
+                name: name,
+                type: type,
+                price: price,
+                covered: covered,
+                address: "灣仔", // Generic
+                img: "https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=600&q=80"
+            };
+
+            if (index === -1) {
+                // Add New
+                restaurants.unshift(data);
+            } else {
+                // Update Existing
+                restaurants[index] = data;
+            }
+
+            saveData();
+            cancelEdit(); // Reset form
+        }
+
+        // --- 5. Core Functionality (Toggle & Lottery) ---
+        function toggleRainMode() {
+            rainMode = !rainMode;
+            const el = document.getElementById('rainModeToggle');
+            const txt = document.getElementById('rainStatus');
+            if(rainMode) { el.classList.add('active'); txt.innerText = "ON"; txt.style.color = "var(--neon-blue)"; }
+            else { el.classList.remove('active'); txt.innerText = "OFF"; txt.style.color = "#555"; }
+        }
+
+        function toggleDb() { document.getElementById('dbContent').classList.toggle('show'); }
 
         function startLottery() {
             const btn = document.getElementById('spinBtn');
@@ -389,38 +447,25 @@
                 return true;
             });
 
-            if (filtered.length === 0) {
-                alert("❌ 呢 14 間入面搵唔到啱條件嘅！試下放寬 Budget？");
-                return;
-            }
+            if (filtered.length === 0) { alert("❌ 條件太嚴苛，搵唔到食！"); return; }
 
-            btn.disabled = true;
-            btn.innerText = "ROLLING...";
-            
-            let iterations = 0;
-            const maxIterations = 20; 
-            let speed = 50; 
+            btn.disabled = true; btn.innerText = "ROLLING...";
+            let i = 0; const max = 20; let speed = 50;
             
             function step() {
-                const tempChoice = filtered[Math.floor(Math.random() * filtered.length)];
-                display.innerText = tempChoice.name;
-                iterations++;
-                
-                if (iterations < maxIterations) {
-                    if (iterations > maxIterations - 10) speed += 30;
+                display.innerText = filtered[Math.floor(Math.random() * filtered.length)].name;
+                i++;
+                if (i < max) {
+                    if (i > max - 10) speed += 30;
                     setTimeout(step, speed);
                 } else {
-                    const finalChoice = filtered[Math.floor(Math.random() * filtered.length)];
-                    display.innerText = finalChoice.name;
+                    const final = filtered[Math.floor(Math.random() * filtered.length)];
+                    display.innerText = final.name;
                     display.style.color = "var(--neon-pink)";
-                    display.style.textShadow = "0 0 20px var(--neon-pink)";
-                    
                     setTimeout(() => {
-                        showResult(finalChoice);
-                        btn.disabled = false;
-                        btn.innerText = "🎰 START ROLL";
+                        showResult(final);
+                        btn.disabled = false; btn.innerText = "🎰 START ROLL";
                         display.style.color = "var(--neon-yellow)";
-                        display.style.textShadow = "0 0 10px var(--neon-yellow)";
                     }, 500);
                 }
             }
@@ -431,30 +476,18 @@
             document.getElementById('resImg').src = item.img;
             document.getElementById('resName').innerText = item.name;
             document.getElementById('resAddress').innerText = item.address;
-            document.getElementById('resPrice').innerText = getPriceSymbol(item.price);
             
-            let typeDisplay = item.type.toUpperCase();
-            if(item.type === 'local') typeDisplay = "港式/茶記";
-            if(item.type === 'asian') typeDisplay = "亞洲/日韓泰";
-            if(item.type === 'western') typeDisplay = "西式/Cafe";
-            document.getElementById('resType').innerText = typeDisplay;
-            
-            document.getElementById('resDist').innerText = item.covered ? "有蓋" : "露天";
-            
-            const mapUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(item.name + " " + item.address + " Wan Chai")}`;
+            let em = "🍱";
+            if(item.type=='western') em = "🍔";
+            if(item.type=='asian') em = "🍜";
+            document.getElementById('resEmoji').innerText = em;
+
+            const mapUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(item.name + " Wan Chai")}`;
             document.getElementById('resMap').href = mapUrl;
             document.getElementById('resultOverlay').style.display = 'flex';
         }
 
-        function closeResult() {
-            document.getElementById('resultOverlay').style.display = 'none';
-        }
-
-        function getPriceSymbol(p) {
-            if (p == 1) return "💵 平";
-            if (p == 2) return "💴 中";
-            return "💶 貴";
-        }
+        function closeResult() { document.getElementById('resultOverlay').style.display = 'none'; }
 
         loadData();
     </script>
